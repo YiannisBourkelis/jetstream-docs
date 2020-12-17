@@ -29,25 +29,23 @@ Team creation and deletion logic may be customized by modifying the relevant act
 
 Execute code when a Team is created / deleted from the web interface or through Team class API.
 
-When a Team is created either from the web interface of Jetstream or through a REST API call directly, it is required sometimes to execute some initialization code. For example, populate a units_of_measure table with default values for the new Team. 
+When a Team is created either from the web interface of Jetstream or through a REST API call directly, it is required sometimes to execute some initialization code. For example, populate a units_of_measure table with default values for the new Team.
 
-Adding a boot() function inside the Team.php class you can execute initialization code when a Team is created or deleted 
+Adding a boot() function inside the Team.php class you can execute initialization code when a Team is created or deleted
 
 ```php
 class Team extends JetstreamTeam
 {
-
     protected static function boot()
     {
         parent::boot();
-        
+
         Team::created(function ($model) {
             UnitOfMeasureController::insert_default_units_of_measure_data($model);
         });
     }
-
   } //Team.php class
-  ```
+```
 
 ## Inspecting User Teams
 
@@ -86,6 +84,9 @@ $user->teamPermissions($team) : array
 
 // Determine if a user has a given team permission...
 $user->hasTeamPermission($team, 'server:create') : bool
+
+// Delete a Team and detach related users
+$team->purge()
 ```
 
 ### Current Team
